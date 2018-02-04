@@ -1,40 +1,42 @@
 const inquire = require('inquirer');
-const Table = require('cli-table');
 const sqlQueries = require('./sqlQueries.js')
+const table = require('./createTable.js');
 
 class Customer {
 
     constructor() {}
 
-    checkStock(products, productId, productQuantity) {
-        let isInStock = false;
-        products.forEach(element => {
-            if (element.item_id === productId) {
-                if (element.stock_quantity >= productQuantity) {
-                    isInStock = true;
-                }
-            }
+    checkStock(products, productId) {
+        return products.find((item) => {
+            return item.item_id === productId;
         });
-        console.log(isInStock);
-        return isInStock;
+    }
+
+    getInvoice(item, buyQuantity) {
+        let total = item.price * buyQuantity;
+        console.log('Your order has been placed.\nYour total: $' + total);
     }
 
     sellPrompt(products) {
         inquire.prompt([{
                 type: 'inputs',
-                name: 'productId',
+                name: 'buyId',
                 message: 'Enter the product id you want to buy:'
             },
             {
                 type: 'inputs',
-                name: 'productQuantity',
+                name: 'buyQuantity',
                 message: 'How many would you like to buy:'
             }
         ]).then(((data) => {
-            if (this.checkStock(products, +data.productId, +data.productQuantity)) {
-                sqlQueries.updateQuery(data.productId, );
+            let item = this.checkStock(products, +data.buyId);
+            if (item.stock_quantity > 0) {
+                let leftInStock = item.stock_quantity - data.buyQuantity;
+                sqlQueries.updateQuery(data.buyId, leftInStock);
+                return this.getInvoice(item, data.buyQuantity);
             } else {
-                console.log('Sorry, not enough in stock.');
+                console.log('Sorry, not enough in stock. You can reorder item in a smaller amount or another item.');
+                return this.sellPrompt(products);
             }
         }).bind(this)).catch((err) => {
             if (err) {
@@ -45,28 +47,8 @@ class Customer {
 
 
     displayProducts() {
-        const table = new Table({
-            head: ['Product Id', 'Product Name', 'Price', 'In Stock'],
-            chars: {
-                'top': '═',
-                'top-mid': '╤',
-                'top-left': '╔',
-                'top-right': '╗',
-                'bottom': '═',
-                'bottom-mid': '╧',
-                'bottom-left': '╚',
-                'bottom-right': '╝',
-                'left': '║',
-                'left-mid': '╟',
-                'mid': '─',
-                'mid-mid': '┼',
-                'right': '║',
-                'right-mid': '╢',
-                'middle': '│'
-            }
-        });
-        sqlQueries.selectQuery(table, this.sellPrompt.bind(this));
+        return sqlQueries.selectQuery(table, this.sellPrompt.bind(this));
     }
-};
+}
 
 module.exports = Customer;

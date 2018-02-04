@@ -1,7 +1,7 @@
-const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const cliTable = require('cli-table');
 const Customer = require('./bamazonCustomer.js');
+const Manager = require('./bamazonManager.js');
+const Supervisor = require('./bamazonSupervisor.js');
 
 function start() {
     inquirer.prompt([{
@@ -16,10 +16,11 @@ function start() {
                 customer.displayProducts();
                 break;
             case 'Manager':
-                console.log('Manager');
+                let manager = new Manager();
+                manager.menuPrompt();
                 break;
             case 'Supervisor':
-                console.log('Supervisor');
+                let supervisor = new Supervisor();
                 break;
             default:
                 console.log('not valid');

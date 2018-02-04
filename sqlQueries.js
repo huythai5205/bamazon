@@ -14,7 +14,6 @@ const sqlQueries = {
         this.connection.query(
             'SELECT * FROM `products`',
             function (err, results) {
-                //console.log(results); // results contains rows returned by server
                 results.forEach(element => {
                     table.push(
                         [element.item_id, element.product_name, element.price, element.stock_quantity]
@@ -28,6 +27,7 @@ const sqlQueries = {
 
 
     updateQuery: function (productId, quantity) {
+        console.log(productId, quantity);
         this.connection.query(
             'UPDATE `products` SET ? WHERE ?', [{
                     stock_quantity: quantity
@@ -36,9 +36,8 @@ const sqlQueries = {
                     id: productId
                 }
             ],
-            function (err, results, fields) {
+            function (err, results) {
                 console.log(results); // results contains rows returned by server
-                console.log(fields); // fields contains extra meta data about results, if available
             }
         );
     },
