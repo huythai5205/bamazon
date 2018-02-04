@@ -1,15 +1,50 @@
 const inquire = require('inquirer');
-const mysql = require('mysql2');
 const Table = require('cli-table');
-
-let products;
+const sqlQueries = require('./sqlQueries.js')
 
 class Customer {
-    constructor() {
 
+    constructor() {}
+
+    checkStock(products, productId, productQuantity) {
+        let isInStock = false;
+        products.forEach(element => {
+            if (element.item_id === productId) {
+                if (element.stock_quantity >= productQuantity) {
+                    isInStock = true;
+                }
+            }
+        });
+        console.log(isInStock);
+        return isInStock;
     }
 
-    displayProducts(_callback) {
+    sellPrompt(products) {
+        inquire.prompt([{
+                type: 'inputs',
+                name: 'productId',
+                message: 'Enter the product id you want to buy:'
+            },
+            {
+                type: 'inputs',
+                name: 'productQuantity',
+                message: 'How many would you like to buy:'
+            }
+        ]).then(((data) => {
+            if (this.checkStock(products, +data.productId, +data.productQuantity)) {
+                sqlQueries.updateQuery(data.productId, );
+            } else {
+                console.log('Sorry, not enough in stock.');
+            }
+        }).bind(this)).catch((err) => {
+            if (err) {
+                console.log('something busted', err);
+            }
+        });
+    };
+
+
+    displayProducts() {
         const table = new Table({
             head: ['Product Id', 'Product Name', 'Price', 'In Stock'],
             chars: {
@@ -30,47 +65,8 @@ class Customer {
                 'middle': '│'
             }
         });
-
-        const connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '1234',
-            database: 'bamazon'
-        });
-
-        connection.connect(function (error) {
-            if (error) throw error;
-        });
-
-        connection.query(
-            'SELECT * FROM `products`',
-            function (err, results) {
-                results.forEach(element => {
-                    table.push(
-                        [element.item_id, element.product_name, element.price, element.stock_quantity]
-                    );
-                });
-                console.log(table.toString());
-                _callback();
-            }
-        );
+        sqlQueries.selectQuery(table, this.sellPrompt.bind(this));
     }
-
-    sellPrompt() {
-        inquire.prompt([{
-                type: 'inputs',
-                name: 'productId',
-                message: 'Enter product id you want to buy:'
-            },
-            {
-                type: 'inputs',
-                name: 'productQuantity',
-                message: 'How many would you like to buy:'
-            }
-        ]).then((data) => {
-            console.log(data);
-        });
-    }
-}
+};
 
 module.exports = Customer;

@@ -3,18 +3,6 @@ const inquirer = require('inquirer');
 const cliTable = require('cli-table');
 const Customer = require('./bamazonCustomer.js');
 
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '1234',
-//     database: 'bamazon'
-// });
-
-// connection.connect(function (error) {
-//     if (error) throw error;
-//     start();
-// });
-
 function start() {
     inquirer.prompt([{
         type: 'list',
@@ -25,7 +13,7 @@ function start() {
         switch (data.role) {
             case 'Customer':
                 let customer = new Customer();
-                customer.displayProducts(customer.sellPrompt);
+                customer.displayProducts();
                 break;
             case 'Manager':
                 console.log('Manager');
