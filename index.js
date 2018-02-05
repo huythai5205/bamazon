@@ -21,11 +21,16 @@ function start() {
                 break;
             case 'Supervisor':
                 let supervisor = new Supervisor();
+                supervisor.menuPrompt();
                 break;
             default:
                 console.log('not valid');
+                break;
+        }
+    }).catch((err) => {
+        if (err) {
+            console.log(err);
         }
     });
 }
-
 start();
