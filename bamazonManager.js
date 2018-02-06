@@ -1,6 +1,6 @@
 const inquire = require('inquirer');
 const sqlQueries = require('./sqlQueries.js')
-const table = require('./createTable.js');
+const createTable = require('./createTable.js');
 
 class Manager {
     constructor() {}
@@ -75,10 +75,14 @@ class Manager {
             switch (data.view) {
                 case 'View Products for Sale':
                     let selectQuery = 'SELECT * FROM products';
+                    let header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
+                    let table = createTable.createTable(header);
                     sqlQueries.queryTable(table, this.menuPrompt, selectQuery);
                     break;
                 case 'View Low Inventory':
                     let query2 = 'SELECT * FROM products WHERE stock_quantity <= 5';
+                    let header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
+                    let table = createTable.createTable(header);
                     sqlQueries.queryTable(table, this.menuPrompt, query2);
                     break;
                 case 'Add to Inventory':

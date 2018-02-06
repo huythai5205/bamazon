@@ -1,6 +1,6 @@
 const inquire = require('inquirer');
 const sqlQueries = require('./sqlQueries.js')
-const table = require('./createTable.js');
+const createTable = require('./createTable.js');
 
 class Customer {
     constructor() {}
@@ -30,9 +30,10 @@ class Customer {
             }
         ]).then(((data) => {
             let item = this.checkStock(products, +data.buyId);
-            if (item.stock_quantity > 0) {
+            if (item.stock_quantity >= data.buyQuantity) {
                 let leftInStock = item.stock_quantity - data.buyQuantity;
-                let query = `SET stock_quantity = ${leftInStock} WHERE item_id = ${data.productId}`;
+                let product_sales = item.product_sales + item.price * data.buyQuantity
+                let query = `SET products.stock_quantity = ${leftInStock}, products.product_sales = ${product_sales} WHERE item_id = ${data.productId}`;
                 sqlQueries.allQuery(query);
                 return this.getInvoice(item, data.buyQuantity);
             } else {
@@ -49,6 +50,7 @@ class Customer {
 
     displayProducts() {
         let query = `SELECT * FROM products`;
+        let table = createTable.create(['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock']);
         return sqlQueries.queryTable(table, this.sellPrompt.bind(this), query);
     }
 }

@@ -33,7 +33,8 @@ class Supervisor {
         }]).then(((data) => {
             switch (data.view) {
                 case 'View Product Sales by Department':
-                    let query = `SELECT * FROM departments`;
+                    let header = ['Department Id', 'Department Name', 'Total Sales', 'Over Head Costs', 'Profits'];
+                    let query = 'SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.products_sales), (SUM(products.product_sales)-departments.over_head_costs) AS total_profit FROM departments INNER JOIN products ON (departments.department_name = products.department_name) GROUP BY department_id';
                     sqlQueries.queryTable(table, this.menuPrompt, query);
                     break;
                 case 'Create New Department':
