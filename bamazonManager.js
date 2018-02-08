@@ -74,15 +74,15 @@ class Manager {
         }]).then(((data) => {
             switch (data.view) {
                 case 'View Products for Sale':
-                    let selectQuery = 'SELECT * FROM products';
-                    let header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
-                    let table = createTable.createTable(header);
+                    var selectQuery = 'SELECT * FROM products';
+                    var header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
+                    var table = createTable.create(header);
                     sqlQueries.queryTable(table, this.menuPrompt, selectQuery);
                     break;
                 case 'View Low Inventory':
                     let query2 = 'SELECT * FROM products WHERE stock_quantity <= 5';
-                    let header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
-                    let table = createTable.createTable(header);
+                    header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
+                    table = createTable.create(header);
                     sqlQueries.queryTable(table, this.menuPrompt, query2);
                     break;
                 case 'Add to Inventory':

@@ -32,9 +32,10 @@ class Customer {
             let item = this.checkStock(products, +data.buyId);
             if (item.stock_quantity >= data.buyQuantity) {
                 let leftInStock = item.stock_quantity - data.buyQuantity;
-                let product_sales = item.product_sales + item.price * data.buyQuantity
-                let query = `SET products.stock_quantity = ${leftInStock}, products.product_sales = ${product_sales} WHERE item_id = ${data.productId}`;
-                sqlQueries.allQuery(query);
+                let updateProducts = `UPDATE products SET stock_quantity = ${leftInStock} WHERE item_id = ${data.buyId}`;
+                let updateDepartment = `UPDATE departments SET products_sales = (products_sales + ${item.price * data.buyQuantity}) WHERE department_name = ${item.department_name}`;
+                sqlQueries.allQuery(updateProducts);
+                sqlQueries.allQuery(updateDepartment);
                 return this.getInvoice(item, data.buyQuantity);
             } else {
                 console.log('Sorry, not enough in stock. You can reorder item in a smaller amount or another item.');
@@ -49,7 +50,7 @@ class Customer {
 
 
     displayProducts() {
-        let query = `SELECT * FROM products`;
+        let query = `SELECT item_id, product_name, department_name, price, stock_quantity FROM products`;
         let table = createTable.create(['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock']);
         return sqlQueries.queryTable(table, this.sellPrompt.bind(this), query);
     }
