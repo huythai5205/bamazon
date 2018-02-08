@@ -6,6 +6,7 @@ It's an Amazon-like storefront utilizing MySQL database to keep tracking of prod
 run 'npm install' to install npm packages
 
 type 'node ,/index.js' to start program
+![Image]
 (./images/start_up.PNG)
 
 ### Customer Interface:
