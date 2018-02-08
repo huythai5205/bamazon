@@ -7,7 +7,7 @@ run 'npm install' to install npm packages
 
 type 'node ,/index.js' to start program
 ![Image]
-(./images/start_up.PNG)
+(images/start_up.PNG)
 
 ### Customer Interface:
 
