@@ -1,6 +1,6 @@
 const inquire = require('inquirer');
 const sqlQueries = require('./sqlQueries.js')
-const table = require('./createTable.js');
+const createTable = require('./createTable.js');
 
 class Supervisor {
     constructor() {}
@@ -33,8 +33,8 @@ class Supervisor {
         }]).then(((data) => {
             switch (data.view) {
                 case 'View Product Sales by Department':
-                    let header = ['Department Id', 'Department Name', 'Total Sales', 'Over Head Costs', 'Profits'];
-                    let query = 'SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.products_sales), (SUM(products.product_sales)-departments.over_head_costs) AS total_profit FROM departments INNER JOIN products ON (departments.department_name = products.department_name) GROUP BY department_id';
+                    let table = createTable.create(['Department Id', 'Department Name', 'Over Head Costs', 'Products Sales', 'Profit']);
+                    let query = 'SELECT department_id, department_name, over_head_costs, products_sales, (products_sales-over_head_costs) AS total_profit FROM departments';
                     sqlQueries.queryTable(table, this.menuPrompt, query);
                     break;
                 case 'Create New Department':

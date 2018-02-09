@@ -10,7 +10,6 @@ const sqlQueries = {
 
     }),
 
-
     queryTable: function (table, _callback, query) {
         this.connection.query(query,
             function (err, results) {
@@ -18,7 +17,6 @@ const sqlQueries = {
                     console.log(err);
                 } else {
                     results.forEach(element => {
-                        table.push(Object.keys(element));
                         table.push(Object.values(element));
                     });
                     console.log(table.toString());

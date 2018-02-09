@@ -33,7 +33,7 @@ class Customer {
             if (item.stock_quantity >= data.buyQuantity) {
                 let leftInStock = item.stock_quantity - data.buyQuantity;
                 let updateProducts = `UPDATE products SET stock_quantity = ${leftInStock} WHERE item_id = ${data.buyId}`;
-                let updateDepartment = `UPDATE departments SET products_sales = (products_sales + ${item.price * data.buyQuantity}) WHERE department_name = ${item.department_name}`;
+                let updateDepartment = `UPDATE departments SET products_sales = (products_sales + ${item.price * data.buyQuantity}) WHERE department_name = '${item.department_name}'`;
                 sqlQueries.allQuery(updateProducts);
                 sqlQueries.allQuery(updateDepartment);
                 return this.getInvoice(item, data.buyQuantity);

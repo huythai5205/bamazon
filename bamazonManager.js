@@ -52,7 +52,7 @@ class Manager {
                 message: 'Enter item quantity:'
             }
         ]).then((data) => {
-            let query = `INSERT INTO products (product_name, department_name, price, stock_quantity) VALUE(${data.productName},${data.departmentName},${data.productPrice},${data.numOfStock})`;
+            let query = `INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES('${data.productName}','${data.departmentName}','${data.productPrice}','${data.numOfStock}')`;
             sqlQueries.allQuery(query);
             console.log('New product has been added.');
             return this.menuPrompt();
@@ -72,18 +72,16 @@ class Manager {
             message: 'What would you like to do:',
             choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
         }]).then(((data) => {
+            const header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
+            const table = createTable.create(header);
             switch (data.view) {
                 case 'View Products for Sale':
-                    var selectQuery = 'SELECT * FROM products';
-                    var header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
-                    var table = createTable.create(header);
-                    sqlQueries.queryTable(table, this.menuPrompt, selectQuery);
+                    var query = 'SELECT * FROM products';
+                    sqlQueries.queryTable(table, this.menuPrompt, query);
                     break;
                 case 'View Low Inventory':
-                    let query2 = 'SELECT * FROM products WHERE stock_quantity <= 5';
-                    header = ['Product Id', 'Product Name', 'Department_name', 'Price', 'In Stock'];
-                    table = createTable.create(header);
-                    sqlQueries.queryTable(table, this.menuPrompt, query2);
+                    query = 'SELECT * FROM products WHERE stock_quantity <= 5';
+                    sqlQueries.queryTable(table, this.menuPrompt, query);
                     break;
                 case 'Add to Inventory':
                     this.addInventoryPrompt();
