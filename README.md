@@ -28,9 +28,21 @@ Manager is given a list to
 
 ### View Products for Sale
 
+Manager can view current products in stock for sale.
+
 ![Image](https://github.com/kennyt85/bamazon/blob/master/images/view-product.PNG)
 
+### View Low Inventory
+
+Manager can view products with low inventory less than five.
+
+![Image](https://github.com/kennyt85/bamazon/blob/master/images/low-inventory.PNG)
+
 ### Add Inventory
+
+Manage can add inventory to current stock.
+
+![Image](https://github.com/kennyt85/bamazon/blob/master/images/add-inventory.PNG)
 
 ### Add New Product
 
@@ -42,9 +54,12 @@ Manager can add new products and it will be add to database.
 
 ### View Product Sales by Department
 
-Supervisor can view departments' sales and profit
+Supervisor can view departments' sales and profit.
 
 ![Image](https://github.com/kennyt85/bamazon/blob/master/images/view-departments.PNG)
+
 ### Create New Department
 
-Supervisor can create new departments
+Supervisor can create new departments.
+
+![Image](https://github.com/kennyt85/bamazon/blob/master/images/add-department.PNG)

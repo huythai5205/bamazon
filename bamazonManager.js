@@ -77,11 +77,11 @@ class Manager {
             switch (data.view) {
                 case 'View Products for Sale':
                     var query = 'SELECT * FROM products';
-                    sqlQueries.queryTable(table, this.menuPrompt, query);
+                    sqlQueries.queryTable(table, this.menuPrompt.bind(this), query);
                     break;
                 case 'View Low Inventory':
                     query = 'SELECT * FROM products WHERE stock_quantity <= 5';
-                    sqlQueries.queryTable(table, this.menuPrompt, query);
+                    sqlQueries.queryTable(table, this.menuPrompt.bind(this), query);
                     break;
                 case 'Add to Inventory':
                     this.addInventoryPrompt();
@@ -92,7 +92,7 @@ class Manager {
                 default:
                     console.log('not valid');
             }
-        }).bind(this)).catch((err) => {
+        })).catch((err) => {
             if (err) {
                 console.log('something busted', err);
             }
